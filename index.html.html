@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>2026 Winter Journey | Osaka & Kyoto</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&family=Noto+Serif+TC:wght@600;900&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'jp-beige': '#F8F4F0',
+                        'jp-paper': '#FAF9F6',
+                        'jp-charcoal': '#333333',
+                        'jp-red': '#D14D41',
+                        'jp-gold': '#A68B5B',
+                        'jp-blue': '#4A6785'
+                    },
+                    fontFamily: {
+                        serif: ['"Noto Serif TC"', 'serif'],
+                        sans: ['"Noto Sans TC"', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body { background-color: #F8F4F0; color: #333333; font-family: 'Noto Sans TC', sans-serif; }
+        .magazine-title { font-family: 'Noto Serif TC', serif; letter-spacing: 0.05em; }
+        .card-shadow { box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+        .active-tab { color: #D14D41; border-top: 3px solid #D14D41; }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        /* 日系雜誌風格的垂直標籤 */
+        .vertical-tag { writing-mode: vertical-rl; text-orientation: mixed; }
+        input, textarea { background-color: #FAF9F6 !important; border: 1px solid #E5E1DA !important; }
+        .important-time { color: #D14D41; font-weight: 900; background: linear-gradient(transparent 70%, #FDE2E1 0%); }
+    </style>
+</head>
+<body class="pb-24">
+
+    <header class="p-6 bg-jp-paper border-b border-gray-200">
+        <div class="flex justify-between items-end">
+            <div>
+                <p class="text-xs tracking-widest text-jp-gold font-bold">FEBRUARY 2026</p>
+                <h1 class="magazine-title text-3xl font-black mt-1">冬の関西</h1>
+                <p class="text-[10px] text-gray-400 uppercase tracking-tighter">Osaka - Kyoto - Nara Travel Guide</p>
+            </div>
+            <div class="text-right">
+                <span class="text-2xl font-serif italic text-jp-red">05</span>
+                <span class="text-[10px] text-gray-400 block">DAYS TRIP</span>
+            </div>
+        </div>
+    </header>
+
+    <main id="app-content" class="p-4 space-y-6">
+        </main>
+
+    <nav class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-100 flex justify-around items-center z-50 h-20 px-2 shadow-2xl">
+        <button onclick="router.push('plan')" class="nav-btn flex flex-col items-center gap-1 w-full py-2 transition-all" data-tab="plan">
+            <i class="fa-solid fa-map-location-dot text-lg"></i>
+            <span class="text-[10px] font-bold">PLAN</span>
+        </button>
+        <button onclick="router.push('guide')" class="nav-btn flex flex-col items-center gap-1 w-full py-2 transition-all" data-tab="guide">
+            <i class="fa-solid fa-camera-retro text-lg"></i>
+            <span class="text-[10px] font-bold">GUIDE</span>
+        </button>
+        <button onclick="router.push('wallet')" class="nav-btn flex flex-col items-center gap-1 w-full py-2 transition-all" data-tab="wallet">
+            <i class="fa-solid fa-wallet text-lg"></i>
+            <span class="text-[10px] font-bold">WALLET</span>
+        </button>
+        <button onclick="router.push('lists')" class="nav-btn flex flex-col items-center gap-1 w-full py-2 transition-all" data-tab="lists">
+            <i class="fa-solid fa-list-check text-lg"></i>
+            <span class="text-[10px] font-bold">LISTS</span>
+        </button>
+        <button onclick="router.push('info')" class="nav-btn flex flex-col items-center gap-1 w-full py-2 transition-all" data-tab="info">
+            <i class="fa-solid fa-circle-info text-lg"></i>
+            <span class="text-[10px] font-bold">INFO</span>
+        </button>
+    </nav>
+
+    <script>
+        // --- Data ---
+        const tripData = {
+            flights: "2026/2/13 TPE-KIX D7378 15:40-19:20\n2026/2/17 KIX-TPE D7379 20:45-23:05",
+            hotel: {
+                name: "Wayfarer Matsu",
+                address: "日本大阪府大阪市中央區南船場1丁目2-7"
+            },
+            itinerary: [
+                {
+                    day: "Day 1", title: "抵達與休息", date: "2026/02/13 (五)",
+                    events: [
+                        { time: "19:20", title: "抵達關西機場 (KIX)", type: "trans" },
+                        { time: "20:30", title: "搭乘 INNN 接駁車前往飯店", type: "trans" },
+                        { time: "21:30", title: "飯店 Check-in & 超市採買", type: "food", desc: "簡單附近超市買餐點、休息" }
+                    ]
+                },
+                {
+                    day: "Day 2", title: "天王寺與新世界", date: "2026/02/14 (六)",
+                    events: [
+                        { time: "09:30", title: "飯店集合出發", type: "important" },
+                        { time: "10:00", title: "四天王寺參拜", type: "sight", desc: "參拜金堂、寺院散步、拍照" },
+                        { time: "11:15", title: "午餐：天王寺周邊", type: "food", desc: "日式定食 / 章魚燒 / HARUKAS" },
+                        { time: "12:45", title: "天王寺公園散步", type: "sight", desc: "咖啡休息" },
+                        { time: "15:15", title: "新世界散策", type: "sight", desc: "通天閣周邊、購買小吃伴手禮" },
+                        { time: "18:00", title: "晚餐：難波地區", type: "food", desc: "燒肉 / 壽司 / 大阪燒" },
+                        { time: "20:00", title: "返回飯店", type: "trans" }
+                    ]
+                },
+                {
+                    day: "Day 3", title: "京都古都與市集", date: "2026/02/15 (日)",
+                    events: [
+                        { time: "08:00", title: "出發梅田站", type: "trans", desc: "搭乘「御堂筋線」轉 阪急京都線" },
+                        { time: "09:55", title: "百萬遍知恩寺", type: "important", desc: "逛百萬遍手作市集 (建議1.5~2hr)" },
+                        { time: "12:10", title: "午餐：祇園一帶", type: "food", desc: "京都勝牛 / 天のめし" },
+                        { time: "13:30", title: "清水寺區域", type: "sight", desc: "二年坂・三年坂散步買伴手禮" },
+                        { time: "18:30", title: "搭乘阪急回大阪", type: "trans" }
+                    ]
+                },
+                {
+                    day: "Day 4", title: "溫泉休息日", date: "2026/02/16 (一)",
+                    events: [
+                        { time: "10:45", title: "大阪 BAY TOWER 咖啡", type: "sight" },
+                        { time: "13:30", title: "空庭溫泉", type: "important", desc: "泡湯、浴衣拍照、休息 (有扶手不需久站)" },
+                        { time: "17:15", title: "晚餐：溫泉館內", type: "food" },
+                        { time: "19:00", title: "地鐵返回飯店", type: "trans" }
+                    ]
+                },
+                {
+                    day: "Day 5", title: "購物與回程", date: "2026/02/17 (二)",
+                    events: [
+                        { time: "上午", title: "心齋橋/難波購物", type: "sight" },
+                        { time: "20:45", title: "班機起飛返台", type: "important" }
+                    ]
+                }
+            ],
+            checklist: ["護照 (效期6個月)", "機票電子檔", "飯店訂房資料", "Visit Japan Web QR", "身分證", "日幣現金", "信用卡 (2張)", "日本網卡/eSIM", "行動電源", "發熱衣", "厚外套", "保暖襪", "牙刷牙膏", "個人藥品", "暖暖包", "折疊雨傘"],
+            spotDetails: [
+                { name: "四天王寺", desc: "日本最早的官方寺院，由聖德太子於593年建立。伽藍配置獨特，中門、五重塔、金堂及講堂呈一直線排列，展現飛鳥時代的建築美學。", tags: "歷史, 建築", loc: "大阪市天王寺區" },
+                { name: "百萬遍知恩寺", desc: "每個月15日舉辦的『百萬遍手作市集』是京都歷史最悠久的市集之一。這裡聚集了陶瓷、手作麵包、織品及各種職人雜貨。", tags: "市集, 限定", loc: "京都市左京區" },
+                { name: "空庭溫泉", desc: "關西最大的溫泉主題樂園，重現安土桃山時代街道。擁有千坪的天空庭園，可以穿著浴衣在紅色鳥居與足湯之間漫步。", tags: "溫泉, 拍照", loc: "大阪市港區", iframe: "https://www.openstreetmap.org/export/embed.html?bbox=135.4578,34.6668,135.4632,34.6712&layer=mapnik" }
+            ]
+        };
+
+        // --- Router & State ---
+        const router = {
+            current: 'plan',
+            push(tab) {
+                this.current = tab;
+                document.querySelectorAll('.nav-btn').forEach(btn => {
+                    btn.classList.remove('active-tab');
+                    if(btn.dataset.tab === tab) btn.classList.add('active-tab');
+                });
+                render();
+            }
+        };
+
+        const store = {
+            getWallet() { return JSON.parse(localStorage.getItem('trip_wallet') || '[]'); },
+            saveWallet(data) { localStorage.setItem('trip_wallet', JSON.stringify(data)); },
+            getChecks() { return JSON.parse(localStorage.getItem('trip_checks') || '{}'); },
+            saveChecks(data) { localStorage.setItem('trip_checks', JSON.stringify(data)); },
+            getMemos() { return localStorage.getItem('trip_memos') || ''; },
+            saveMemos(text) { localStorage.setItem('trip_memos', text); }
+        };
+
+        // --- Helpers ---
+        function compressImage(file) {
+            return new Promise((resolve) => {
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = (e) => {
+                    const img = new Image();
+                    img.src = e.target.result;
+                    img.onload = () => {
+                        const canvas = document.createElement('canvas');
+                        const ctx = canvas.getContext('2d');
+                        const maxW = 300;
+                        const scale = maxW / img.width;
+                        canvas.width = maxW;
+                        canvas.height = img.height * scale;
+                        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                        resolve(canvas.toDataURL('image/jpeg', 0.6));
+                    };
+                };
+            });
+        }
+
+        function safeEval(str) {
+            try { return Function(`'use strict'; return (${str})`)(); } 
+            catch { return 0; }
+        }
+
+        // --- Render Modules ---
+        function renderPlan() {
+            let html = `
+                <div class="card-shadow bg-jp-paper p-5 border-l-4 border-jp-red mb-6">
+                    <h3 class="magazine-title text-lg font-bold mb-3"><i class="fa-solid fa-plane-departure mr-2"></i>Flight & Stay</h3>
+                    <p class="text-xs whitespace-pre-line leading-relaxed text-gray-500">${tripData.flights}</p>
+                    <div class="mt-4 pt-4 border-t border-dashed border-gray-200">
+                        <p class="text-sm font-bold text-jp-charcoal">${tripData.hotel.name}</p>
+                        <p class="text-[10px] text-gray-400 mb-2">${tripData.hotel.address}</p>
+                        <button onclick="window.open('https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(tripData.hotel.address)}') " 
+                            class="bg-jp-charcoal text-white text-[10px] px-3 py-1 rounded-full">Google Maps</button>
+                    </div>
+                </div>
+            `;
+
+            tripData.itinerary.forEach(day => {
+                html += `
+                    <div class="mb-10">
+                        <div class="flex items-baseline gap-2 mb-4">
+                            <h2 class="magazine-title text-4xl font-black text-jp-gold opacity-30">${day.day.split(' ')[1]}</h2>
+                            <div>
+                                <p class="text-xs font-bold text-jp-charcoal">${day.date}</p>
+                                <p class="magazine-title text-lg font-bold">${day.title}</p>
+                            </div>
+                        </div>
+                        <div class="space-y-4 relative ml-4 border-l border-gray-100 pl-6">
+                            ${day.events.map(ev => `
+                                <div class="relative bg-white p-4 rounded-xl card-shadow border border-gray-50">
+                                    <div class="absolute -left-[31px] top-6 w-2 h-2 rounded-full bg-jp-gold"></div>
+                                    <div class="flex justify-between items-start">
+                                        <span class="text-[11px] font-black ${ev.type === 'important' ? 'important-time' : 'text-gray-400'}">${ev.time}</span>
+                                        <div class="flex gap-2">
+                                            ${ev.type === 'food' ? `<button onclick="window.open('https://www.google.com/search?q=${encodeURIComponent(ev.title + ' 食記')}')" class="text-[10px] text-jp-blue"><i class="fa-solid fa-utensils"></i></button>` : ''}
+                                            <button onclick="window.open('https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(ev.title)}') " class="text-[10px] text-jp-red"><i class="fa-solid fa-location-dot"></i></button>
+                                        </div>
+                                    </div>
+                                    <h4 class="text-sm font-bold mt-1 text-jp-charcoal">${ev.title}</h4>
+                                    ${ev.desc ? `<p class="text-[10px] text-gray-400 mt-1">${ev.desc}</p>` : ''}
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            });
+            return html;
+        }
+
+        function renderGuide() {
+            return `
+                <h2 class="magazine-title text-2xl font-black text-center mb-8 pt-4">深度紀行 <span class="text-sm font-normal block tracking-widest text-jp-gold mt-1">SIGHTSEEING GUIDE</span></h2>
+                <div class="space-y-12">
+                    ${tripData.spotDetails.map(spot => `
+                        <div class="relative">
+                            <div class="absolute -top-4 -left-2 text-6xl font-serif text-jp-beige z-0 opacity-50">${spot.name[0]}</div>
+                            <div class="relative z-10">
+                                <span class="text-[10px] bg-jp-red text-white px-2 py-0.5 tracking-tighter mb-2 inline-block">${spot.tags}</span>
+                                <h3 class="magazine-title text-xl font-bold mb-2">${spot.name}</h3>
+                                <p class="text-xs text-jp-gold font-bold mb-3"><i class="fa-solid fa-map-pin mr-1"></i>${spot.loc}</p>
+                                <p class="text-sm leading-relaxed text-gray-600 mb-4 text-justify">${spot.desc}</p>
+                                ${spot.iframe ? `<div class="rounded-xl overflow-hidden card-shadow h-40 border border-gray-100"><iframe width="100%" height="100%" frameborder="0" src="${spot.iframe}"></iframe></div>` : ''}
+                                <div class="mt-4 text-right">
+                                    <button onclick="window.open('https://www.google.com/search?q=${encodeURIComponent(spot.name + ' 介紹')}')" class="text-xs font-bold border-b-2 border-jp-charcoal pb-1">READ MORE +</button>
+                                </div>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+        }
+
+        function renderWallet() {
+            const wallet = store.getWallet();
+            return `
+                <div class="bg-jp-charcoal text-white p-6 rounded-3xl card-shadow mb-8">
+                    <p class="text-[10px] tracking-widest opacity-60 mb-1">CURRENCY CONVERTER</p>
+                    <div class="flex items-center gap-4">
+                        <input id="fx-input" type="text" placeholder="500 + 200 * 3" class="bg-transparent border-none text-2xl font-bold flex-1 focus:ring-0 text-white placeholder-gray-500" oninput="updateFx(this.value)">
+                    </div>
+                    <div class="mt-4 pt-4 border-t border-white/10 flex justify-between items-end">
+                        <div>
+                            <p class="text-[10px] opacity-60">RESULT (JPY)</p>
+                            <p id="fx-jpy" class="text-xl font-black">¥ 0</p>
+                        </div>
+                        <div class="text-right">
+                            <p class="text-[10px] opacity-60">EST. TWD (÷5)</p>
+                            <p id="fx-twd" class="text-xl font-black text-jp-red">$ 0</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white p-5 rounded-3xl card-shadow mb-8">
+                    <h3 class="magazine-title font-bold mb-4">支出紀錄</h3>
+                    <div class="space-y-4">
+                        <input id="exp-name" type="text" placeholder="品項名稱" class="w-full px-4 py-3 rounded-xl text-sm outline-none">
+                        <div class="flex gap-2">
+                            <input id="exp-amount" type="number" placeholder="日幣金額" class="flex-1 px-4 py-3 rounded-xl text-sm outline-none">
+                            <label class="bg-jp-beige w-12 flex items-center justify-center rounded-xl border border-gray-200 cursor-pointer">
+                                <i class="fa-solid fa-camera text-jp-gold"></i>
+                                <input type="file" class="hidden" accept="image/*" onchange="handleExpenseImg(this)">
+                            </label>
+                        </div>
+                        <img id="img-preview" class="hidden w-full h-32 object-cover rounded-xl border border-gray-100">
+                        <button onclick="addExpense()" class="w-full bg-jp-gold text-white font-bold py-3 rounded-xl shadow-lg active:scale-95 transition">紀錄此筆支出</button>
+                    </div>
+                </div>
+
+                <div class="space-y-3" id="wallet-list">
+                    ${wallet.length === 0 ? '<p class="text-center text-xs text-gray-400 py-10">尚無支出紀錄</p>' : wallet.map((item, idx) => `
+                        <div class="bg-white p-3 rounded-2xl flex items-center gap-4 card-shadow border border-gray-50">
+                            ${item.img ? `<img src="${item.img}" class="w-12 h-12 rounded-lg object-cover">` : `<div class="w-12 h-12 bg-gray-50 rounded-lg flex items-center justify-center text-gray-200 text-lg"><i class="fa-solid fa-bag-shopping"></i></div>`}
+                            <div class="flex-1">
+                                <p class="text-xs font-bold text-jp-charcoal">${item.name}</p>
+                                <p class="text-[10px] text-gray-400">¥${item.jpy} / NT$${item.twd}</p>
+                            </div>
+                            <button onclick="deleteExpense(${idx})" class="text-gray-300 px-2"><i class="fa-solid fa-trash-can"></i></button>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+        }
+
+        function renderLists() {
+            const checks = store.getChecks();
+            const memoText = store.getMemos();
+            
+            // 轉換網址為連結
+            const formatMemo = (text) => {
+                const urlRegex = /(https?:\/\/[^\s]+)/g;
+                return text.replace(urlRegex, (url) => `<a href="${url}" target="_blank" class="bg-jp-blue text-white px-2 py-0.5 rounded text-[10px] inline-block mt-1 mr-1 mb-1">開啟連結 <i class="fa-solid fa-external-link text-[8px]"></i></a>`);
+            };
+
+            return `
+                <div class="grid grid-cols-2 gap-4 mb-8">
+                    <div class="bg-jp-paper p-5 rounded-3xl border border-gray-200">
+                        <h3 class="magazine-title font-bold text-sm mb-4 border-b border-jp-gold pb-2">行李備忘</h3>
+                        <div class="space-y-3 h-64 overflow-y-auto no-scrollbar">
+                            ${tripData.checklist.map((item, i) => `
+                                <div class="flex items-center gap-2" onclick="toggleCheck(${i})">
+                                    <div class="w-4 h-4 border border-jp-gold rounded flex items-center justify-center transition-colors ${checks[i] ? 'bg-jp-gold' : ''}">
+                                        ${checks[i] ? '<i class="fa-solid fa-check text-white text-[8px]"></i>' : ''}
+                                    </div>
+                                    <span class="text-[11px] ${checks[i] ? 'text-gray-300 line-through' : 'text-gray-600'}">${item}</span>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                    <div class="bg-white p-5 rounded-3xl card-shadow">
+                        <h3 class="magazine-title font-bold text-sm mb-4 border-b border-gray-200 pb-2">個人隨筆</h3>
+                        <textarea class="w-full h-40 text-xs p-2 rounded-xl border-none outline-none resize-none" placeholder="輸入網址會自動轉換..." oninput="store.saveMemos(this.value); document.getElementById('memo-preview').innerHTML = formatMemo(this.value)">${memoText}</textarea>
+                        <div id="memo-preview" class="mt-2 h-20 overflow-y-auto no-scrollbar">${formatMemo(memoText)}</div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderInfo() {
+            return `
+                <h2 class="magazine-title text-2xl font-black text-center mb-8 pt-4">旅の知恵 <span class="text-sm font-normal block tracking-widest text-jp-gold mt-1">TRAVEL INFO</span></h2>
+                <div class="space-y-4">
+                    <a href="https://www.jma.go.jp/bosai/forecast/#area_code=270000" target="_blank" class="block bg-jp-paper p-6 rounded-3xl border border-gray-200 relative overflow-hidden group">
+                        <i class="fa-solid fa-cloud-sun absolute -right-4 -bottom-4 text-7xl text-jp-beige group-hover:text-jp-gold transition-colors"></i>
+                        <h4 class="font-bold mb-1">日本氣象廳</h4>
+                        <p class="text-xs text-gray-400">即時大阪/京都天氣預報</p>
+                    </a>
+                    <div class="bg-white p-6 rounded-3xl card-shadow">
+                        <h4 class="font-bold mb-4 text-jp-red"><i class="fa-solid fa-phone-flip mr-2"></i>緊急聯絡電話</h4>
+                        <div class="space-y-3 text-sm">
+                            <div class="flex justify-between border-b border-gray-50 pb-2"><span>警察局</span><span class="font-black">110</span></div>
+                            <div class="flex justify-between border-b border-gray-50 pb-2"><span>救護車/消防</span><span class="font-black">119</span></div>
+                            <div class="flex justify-between border-b border-gray-50 pb-2"><span>台北駐日代表處</span><span class="font-black">03-3280-7811</span></div>
+                        </div>
+                    </div>
+                    <div class="bg-jp-paper p-6 rounded-3xl border border-gray-200">
+                        <h4 class="font-bold mb-4 text-jp-gold">旅遊小叮嚀</h4>
+                        <ul class="text-xs space-y-3 text-gray-500 leading-loose">
+                            <li><b class="text-jp-charcoal">手扶梯：</b>大阪通常靠右站，京都則隨緣。</li>
+                            <li><b class="text-jp-charcoal">垃圾：</b>日本街頭垃圾桶極少，建議隨身帶小袋子。</li>
+                            <li><b class="text-jp-charcoal">安靜：</b>大眾運輸工具上請將手機轉為靜音模式。</li>
+                            <li><b class="text-jp-charcoal">塑膠袋：</b>日本超商垃圾袋需付費，建議帶環保袋。</li>
+                        </ul>
+                    </div>
+                </div>
+            `;
+        }
+
+        function render() {
+            const container = document.getElementById('app-content');
+            switch(router.current) {
+                case 'plan': container.innerHTML = renderPlan(); break;
+                case 'guide': container.innerHTML = renderGuide(); break;
+                case 'wallet': container.innerHTML = renderWallet(); break;
+                case 'lists': container.innerHTML = renderLists(); break;
+                case 'info': container.innerHTML = renderInfo(); break;
+            }
+            window.scrollTo(0, 0);
+        }
+
+        // --- Logic Functions ---
+        let currentImgBase64 = null;
+
+        function updateFx(val) {
+            const jpy = safeEval(val);
+            document.getElementById('fx-jpy').innerText = `¥ ${jpy.toLocaleString()}`;
+            document.getElementById('fx-twd').innerText = `$ ${Math.round(jpy / 5).toLocaleString()}`;
+        }
+
+        async function handleExpenseImg(input) {
+            if (input.files && input.files[0]) {
+                currentImgBase64 = await compressImage(input.files[0]);
+                const preview = document.getElementById('img-preview');
+                preview.src = currentImgBase64;
+                preview.classList.remove('hidden');
+            }
+        }
+
+        function addExpense() {
+            const name = document.getElementById('exp-name').value;
+            const amount = document.getElementById('exp-amount').value;
+            if(!name || !amount) return alert('請填寫完整');
+            
+            const wallet = store.getWallet();
+            wallet.unshift({
+                name,
+                jpy: amount,
+                twd: Math.round(amount / 5),
+                img: currentImgBase64,
+                time: new Date().getTime()
+            });
+            store.saveWallet(wallet);
+            currentImgBase64 = null;
+            render();
+        }
+
+        function deleteExpense(idx) {
+            const wallet = store.getWallet();
+            wallet.splice(idx, 1);
+            store.saveWallet(wallet);
+            render();
+        }
+
+        function toggleCheck(i) {
+            const checks = store.getChecks();
+            checks[i] = !checks[i];
+            store.saveChecks(checks);
+            render();
+        }
+
+        // --- Initialize ---
+        window.onload = () => {
+            router.push('plan');
+        };
+
+        // 監聽網址格式轉換（在列表頁面即時使用）
+        const formatMemo = (text) => {
+            const urlRegex = /(https?:\/\/[^\s]+)/g;
+            return text.replace(urlRegex, (url) => `<a href="${url}" target="_blank" class="bg-jp-blue text-white px-2 py-0.5 rounded text-[10px] inline-block mt-1 mr-1 mb-1">開啟連結 <i class="fa-solid fa-external-link text-[8px]"></i></a>`);
+        };
+
+    </script>
+</body>
+</html>
